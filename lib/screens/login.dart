@@ -6,6 +6,11 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //simulação de credenciais para enviar pela navegação como argumento
+    final String usuario = 'admin';
+    final String senha = 'admin123';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -17,10 +22,12 @@ class Login extends StatelessWidget {
           Text('Login Screen'),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_){
-                  return const ProfileScreem();
-                })
+              Navigator.of(context).pushNamed(
+                '/profile',
+                arguments: {
+                  'usuario': usuario,
+                  'senha': senha,
+                },
               );
             },
             child: const Text('Go to Profile'),

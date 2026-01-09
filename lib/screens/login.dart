@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rcadminapp/screens/profile_screem.dart';
+import 'package:rcadminapp/widgets/login_form.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -15,25 +16,51 @@ class Login extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          Text('Login Screen'),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                '/profile',
-                arguments: {
-                  'usuario': usuario,
-                  'senha': senha,
-                },
-              );
-            },
-            child: const Text('Go to Profile'),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(95, 120, 138, 0.5),
+                  Color.fromRGBO(36, 59, 85, 0.9),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            )
           ),
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LoginForm(),
+              ],
+            ),
+          )
         ],
-      ),
+      )
+      // body: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Text('Login Screen'),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         Navigator.of(context).pushNamed(
+      //           '/profile',
+      //           arguments: {
+      //             'usuario': usuario,
+      //             'senha': senha,
+      //           },
+      //         );
+      //       },
+      //       child: const Text('Go to Profile'),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

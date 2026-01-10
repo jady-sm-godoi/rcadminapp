@@ -18,6 +18,22 @@ class _LoginFormState extends State<LoginForm> {
     'email': '',
     'password': ''
   };
+
+  void _showErrorDialog(String msg){
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog(
+        title: Text('Ocorreu um erro'),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), 
+            child: Text('Fechar'),
+          )
+        ],
+      ),
+    );
+  }
   
   Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
@@ -29,11 +45,21 @@ class _LoginFormState extends State<LoginForm> {
     setState(() => _isLoading = true);
 
     _formKey.currentState?.save();
-    
+
     Auth auth = Provider.of(context, listen: false);
-    await auth.loginRequest(_authData['email']!, _authData['password']!);
+    try{
+      await auth.loginRequest(_authData['email']!, _authData['password']!);
+    }catch(error){
+       if (error is Exception) {
+        _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
+      } else {
+        _showErrorDialog('Erro inesperado');
+      }
+    }
 
     setState(() => _isLoading = false);
+
+     
     print('Formulário submetido');
   }
 

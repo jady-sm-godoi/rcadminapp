@@ -17,5 +17,23 @@ class Auth with ChangeNotifier{
       })
     );
     print(jsonDecode(response.body));
+
+    if (response.statusCode >= 400) {
+      final body = jsonDecode(response.body);
+      final apiMessage = body['detail'];
+
+      String errorMessage;
+
+      switch (apiMessage) {
+        case 'Invalid credentials.':
+          errorMessage = 'Email ou senha inválidos';
+          break;
+        default:
+          errorMessage = 'Erro ao realizar login';
+      }
+
+      throw Exception(errorMessage);
+    }
+
   }
 }

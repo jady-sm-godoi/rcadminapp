@@ -49,6 +49,9 @@ class _LoginFormState extends State<LoginForm> {
     Auth auth = Provider.of(context, listen: false);
     try{
       await auth.loginRequest(_authData['email']!, _authData['password']!);
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/profile');
+      }
     }catch(error){
        if (error is Exception) {
         _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
@@ -57,7 +60,9 @@ class _LoginFormState extends State<LoginForm> {
       }
     }
 
-    setState(() => _isLoading = false);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
 
      
     print('Formulário submetido');
@@ -74,12 +79,23 @@ class _LoginFormState extends State<LoginForm> {
       ),
       child: Container(
         padding: EdgeInsets.all(16),
-        height: 320,
+        height: 400,
         width: deviceSize.width * 0.75,
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(135, 118, 78, 1)
+                )
+              ),
+              SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'e-mail',
@@ -104,15 +120,32 @@ class _LoginFormState extends State<LoginForm> {
                 ElevatedButton(
                   onPressed: _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(255, 193, 7, 1),
+                    backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),
                     padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0,
                     ),
+                    minimumSize: Size(double.infinity, 36)
                   ),
                   child: Text('Entrar',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Forgot Password?',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .color!
+                              .withOpacity(0.64),
+                        ),
                   ),
                 ),
             ],

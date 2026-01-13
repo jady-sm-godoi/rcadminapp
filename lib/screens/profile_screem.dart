@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/models/user_profile.dart';
 import 'package:rcadminapp/service/profile_service.dart';
 import 'package:rcadminapp/widgets/user_profile_card.dart';
@@ -11,59 +13,111 @@ class ProfileScreem extends StatefulWidget {
 }
 
 class _ProfileScreemState extends State<ProfileScreem> {
-
   late Future<UserProfileModel> _futureProfile;
-  final String _token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNTEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3Njc4NzYxMjgsImV4cCI6MTc2Nzg3NzAyOH0.3kUHml-4INGXJft0HcE5b4WJN9WSfZ1PuPSrkRlSgJQ';
 
   @override
   void initState() {
     super.initState();
-    _futureProfile = ProfileService().fetchProfile(_token);
+    final auth = Provider.of<Auth>(context, listen: false);
+    _futureProfile = ProfileService().fetchProfile(auth);
   }
-  
 
   @override
   Widget build(BuildContext context) {
-
     // Recupera os argumentos passados pela navegação: credenciais de login
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>?;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>?;
     final usuario = args != null ? args['usuario'] : 'N/A';
     final senha = args != null ? args['senha'] : 'N/A';
 
     print('Usuário: $usuario, Senha: $senha');
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Profile'),
+        centerTitle: false,
+        title: const Text(
+          'rc@dmin app',
+          style: TextStyle(color: Color.fromRGBO(135, 118, 78, 1)),
         ),
-      body: FutureBuilder(future: _futureProfile, builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(child: CircularProgressIndicator(),);
-        }
-
-        if (snapshot.hasError) {
-          return Center(
+        elevation: 5,
+        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+        foregroundColor: Colors.black,
+        shadowColor: Colors.black,
+        toolbarHeight: 72,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.settings_outlined,
+              color: Color.fromRGBO(135, 118, 78, 1),
+            ),
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(95, 120, 138, 0.5),
+              Color.fromRGBO(36, 59, 85, 0.9),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  snapshot.error.toString(),
-                  textAlign: TextAlign.center,
+                FutureBuilder(
+                  future: _futureProfile,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              snapshot.error.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  final auth = Provider.of<Auth>(
+                                    context,
+                                    listen: false,
+                                  );
+                                  _futureProfile = ProfileService().fetchProfile(
+                                    auth,
+                                  );
+                                });
+                              },
+                              child: const Text('Tentar novamente'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return UserProfileCard(user: snapshot.data!);
+                  },
                 ),
-                SizedBox(height: 16,),
-                ElevatedButton(onPressed: (){
-                  setState(() {
-                    _futureProfile = ProfileService().fetchProfile(_token);
-                  });
-                }, child: const Text('Tentar novamente'),
-                )
               ],
             ),
-          );
-        }
-
-        return UserProfileCard(user: snapshot.data!);
-      }),
+          ),
+        ),
+      ),
     );
   }
 }

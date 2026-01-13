@@ -13,12 +13,25 @@ class Login extends StatelessWidget {
     final String senha = 'admin123';
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('rc@dmin app', style: TextStyle(color: Color.fromRGBO(135, 118, 78, 1)),),
+        centerTitle: true,
+        elevation: 5,
+        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+        foregroundColor: Colors.black,
+        shadowColor: Colors.black,
+        toolbarHeight: 72,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(32),
+          ),
+        ),
       ),
       body: Stack(
         children: [
           Container(
+            height: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -39,28 +52,9 @@ class Login extends StatelessWidget {
                 LoginForm(),
               ],
             ),
-          )
+          ),
         ],
       )
-      // body: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Text('Login Screen'),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         Navigator.of(context).pushNamed(
-      //           '/profile',
-      //           arguments: {
-      //             'usuario': usuario,
-      //             'senha': senha,
-      //           },
-      //         );
-      //       },
-      //       child: const Text('Go to Profile'),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

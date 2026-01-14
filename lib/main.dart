@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
+import 'package:rcadminapp/screens/edit_profile_screen.dart';
 import 'package:rcadminapp/screens/login.dart';
 import 'package:rcadminapp/screens/paginanaoencontrada.dart';
 import 'package:rcadminapp/screens/profile_screem.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         routes: { //rotas oficiais
           '/': (_) => const Login(),
           '/profile': (_) => const ProfileScreem(),
+          '/edit_profile': (_) => const EditProfileScreen(),
         },
       
         onGenerateRoute: (settings) { // rotas dinâmicas (ex: com parâmetros, perfil específico, etc)

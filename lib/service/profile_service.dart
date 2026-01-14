@@ -67,4 +67,40 @@ class ProfileService {
       rethrow;
     }
   }
+
+  Future<void> uploadProfileImage(Auth auth, File imageFile) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/image/upload');
+
+    // Função auxiliar para criar e enviar a requisição, pois MultipartRequest é de uso único
+    Future<http.Response> sendRequest(String token) async {
+      final request = http.MultipartRequest('PATCH', uri);
+      request.headers['Authorization'] = 'Bearer $token';
+      // 'file' é o nome comum para campos de upload, ajuste se a API esperar outro nome (ex: 'image')
+      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+      
+      final streamedResponse = await request.send().timeout(const Duration(seconds: 30));
+      return http.Response.fromStream(streamedResponse);
+    }
+
+    try {
+      var response = await sendRequest(auth.token ?? '');
+
+      if (response.statusCode == 401) {
+        final success = await auth.tryRefreshToken();
+        if (success) {
+          response = await sendRequest(auth.token ?? '');
+        }
+      }
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro upload body: ${response.body}');
+      throw AppException('Erro ao enviar imagem (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro upload imagem: $e');
+      rethrow;
+    }
+  }
 }

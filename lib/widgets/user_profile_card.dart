@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rcadminapp/models/user_profile.dart';
+import 'package:rcadminapp/widgets/profile_pic.dart';
 
 class UserProfileCard extends StatelessWidget {
   final UserProfileModel user;
@@ -10,7 +11,7 @@ class UserProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.only(top: 72),
+      margin: EdgeInsets.only(top: 150,bottom: 50),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -26,19 +27,24 @@ class UserProfileCard extends StatelessWidget {
             )
           ),
           Divider(height: 16 * 2.5, color: Colors.grey),
+          Info(infoKey: 'Data de Nascimento', info: '${user.birth.day}/${user.birth.month}/${user.birth.year}'),
+          Info(infoKey: 'CPF', info: user.idCard),
+          Info(infoKey: 'discipulado', info: '${user.aspect} - ${user.aspectDate.day}/${user.aspectDate.month}/${user.aspectDate.year}'),
+          Divider(height: 16 * 2.5, color: Colors.grey),
           Info(infoKey: 'e-mail', info: user.email),
           Info(infoKey: 'Telefone', info: user.phone),
-          Info(infoKey: 'Data de Nascimento', info: '${user.birth.day}/${user.birth.month}/${user.birth.year}'),
-          Info(infoKey:'Endereço', info: '${user.address}, ${user.number}\n${user.complement} ${user.district}'),
-          Info(infoKey: 'Cidade', info: user.city),
-          Info(infoKey: 'País', info: user.country),
+          Info(infoKey:'Endereço', info: '${user.address}, ${user.number}\n${user.complement} ${user.district} \n${user.zipCode} \n${user.city} - ${user.state} - ${user.country}'),
+          Divider(height: 16 * 2.5, color: Colors.grey),
+          Info(infoKey: 'SOS', info: 'Contato: ${user.sosContact}\nTelefone: ${user.sosPhone}'),
           SizedBox(height: 16),
           Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
               width: 160,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/edit_profile', arguments: user);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                   shape: RoundedRectangleBorder(
@@ -59,55 +65,6 @@ class UserProfileCard extends StatelessWidget {
           ]
         ),
       )
-    );
-  }
-}
-
-class ProfilePic extends StatelessWidget {
-  const ProfilePic({
-    super.key,
-    required this.image,
-    this.isShowPhotoUpload = false,
-    this.imageUploadBtnPress,
-  });
-
-  final String image;
-  final bool isShowPhotoUpload;
-  final VoidCallback? imageUploadBtnPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      margin: const EdgeInsets.symmetric(vertical: 16.0),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color:
-              Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.08),
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage(image),
-          ),
-          InkWell(
-            onTap: imageUploadBtnPress,
-            child: CircleAvatar(
-              radius: 13,
-              backgroundColor: Color.fromRGBO(135, 118, 78, 1),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
@@ -135,7 +92,7 @@ class Info extends StatelessWidget {
                   .textTheme
                   .bodyLarge!
                   .color!
-                  .withOpacity(0.8),
+                  .withValues(alpha: 0.7),
             ),
           ),
           Text(info, textAlign: TextAlign.right),

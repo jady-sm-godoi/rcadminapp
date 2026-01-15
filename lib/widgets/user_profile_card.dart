@@ -4,8 +4,9 @@ import 'package:rcadminapp/widgets/profile_pic.dart';
 
 class UserProfileCard extends StatelessWidget {
   final UserProfileModel user;
+  final VoidCallback? onReturn;
 
-  const UserProfileCard({super.key, required this.user});
+  const UserProfileCard({super.key, required this.user, this.onReturn});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,9 @@ class UserProfileCard extends StatelessWidget {
             child: SizedBox(
               width: 160,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/edit_profile', arguments: user);
+                onPressed: () async {
+                  await Navigator.of(context).pushNamed('/edit_profile', arguments: user);
+                  if (onReturn != null) onReturn!();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(135, 118, 78, 1),

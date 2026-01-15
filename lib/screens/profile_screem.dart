@@ -103,7 +103,15 @@ class _ProfileScreemState extends State<ProfileScreem> {
                         ),
                       );
                     }
-                    return UserProfileCard(user: snapshot.data!);
+                    return UserProfileCard(
+                      user: snapshot.data!,
+                      onReturn: () {
+                        setState(() {
+                          final auth = Provider.of<Auth>(context, listen: false);
+                          _futureProfile = ProfileService().fetchProfile(auth);
+                        });
+                      },
+                    );
                   },
                 ),
               ],

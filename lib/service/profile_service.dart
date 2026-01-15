@@ -140,5 +140,88 @@ class ProfileService {
       rethrow;
     }
   }
-}
 
+  Future<void> updateProfileData(Auth auth, Map<String, dynamic> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/update');
+    String token = auth.token ?? '';
+
+    try {
+      var response = await http.patch(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 401) {
+        final success = await auth.tryRefreshToken();
+        if (success) {
+          token = auth.token ?? '';
+          response = await http.patch(
+            uri,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(data),
+          ).timeout(const Duration(seconds: 30));
+        }
+      }
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro update body: ${response.body}');
+      throw AppException('Erro ao atualizar perfil (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro update perfil: $e');
+      rethrow;
+    }
+  }
+
+
+  Future<void> updateProfileEmail(Auth auth, Map<String, String> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/email/change');
+    String token = auth.token ?? '';
+
+    try {
+      var response = await http.patch(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 401) {
+        final success = await auth.tryRefreshToken();
+        if (success) {
+          token = auth.token ?? '';
+          response = await http.patch(
+            uri,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(data),
+          ).timeout(const Duration(seconds: 30));
+        }
+      }
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro update body: ${response.body}');
+      throw AppException('Erro ao atualizar email (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro update email: $e');
+      rethrow;
+    }
+  }
+
+}

@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/images/jady.jpg
     - assets/images/RCA.png
+    - assets/images/avatar_placeholder.png
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

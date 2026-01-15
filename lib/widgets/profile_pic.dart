@@ -35,10 +35,7 @@ class ProfilePic extends StatelessWidget {
             radius: 60,
             backgroundImage: imageFile != null
                 ? FileImage(imageFile!) as ImageProvider
-                : (image.isNotEmpty ? NetworkImage(image) : null),
-            child: image.isEmpty
-                ? const Icon(Icons.person, size: 60, color: Color.fromARGB(255, 136, 76, 76))
-                : null,
+                : (image.isNotEmpty ? NetworkImage(image) : const AssetImage('assets/images/avatar_placeholder.png') as ImageProvider),
           ),
           if (isShowPhotoUpload)
             InkWell(

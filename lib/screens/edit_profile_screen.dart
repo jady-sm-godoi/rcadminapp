@@ -17,12 +17,13 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _selectedImage;
+  bool _imageDeleted = false;
 
   Future<void> profilePicUpdate() async {
     try {
       final ImagePicker picker = ImagePicker();
 
-      final ImageSource? source = await showModalBottomSheet<ImageSource>(
+      final dynamic source = await showModalBottomSheet<dynamic>(
         context: context,
         builder: (BuildContext context) {
           return SafeArea(
@@ -38,6 +39,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   title: const Text('Câmera'),
                   onTap: () => Navigator.of(context).pop(ImageSource.camera),
                 ),
+                ListTile(
+                  leading: const Icon(Icons.delete),
+                  title: const Text('Remover imagem'),
+                  onTap: () {
+                    Navigator.of(context).pop('delete');
+                  },
+                )
               ],
             ),
           );
@@ -46,13 +54,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       if (source == null) return;
 
-      final XFile? image = await picker.pickImage(source: source);
+      final auth = Provider.of<Auth>(context, listen: false);
+
+      if (source == 'delete') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Removendo imagem...')),
+        );
+
+        await ProfileService().deleteProfileImage(auth);
+
+        if (!context.mounted) return;
+
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Imagem removida com sucesso!')),
+        );
+        setState(() {
+          _selectedImage = null;
+          _imageDeleted = true;
+        });
+        return;
+      }
+
+      final XFile? image = await picker.pickImage(source: source as ImageSource, imageQuality: 50);
 
       if (image == null) return;
 
       if (!context.mounted) return;
-
-      final auth = Provider.of<Auth>(context, listen: false);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Enviando imagem...')),
@@ -70,6 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // Só atualiza a UI se a linha de cima (upload) funcionar sem erros
       setState(() {
         _selectedImage = File(image.path);
+        _imageDeleted = false;
       });
 
     } catch (e) {
@@ -137,7 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Column(
                   children: [
                     ProfilePic(
-                      image: user.imageUrl,
+                      image: _imageDeleted ? '' : user.imageUrl,
                       imageFile: _selectedImage, // Passa a imagem local se existir
                       isShowPhotoUpload: true,
                       imageUploadBtnPress: profilePicUpdate,

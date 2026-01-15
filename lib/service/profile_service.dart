@@ -75,7 +75,7 @@ class ProfileService {
     Future<http.Response> sendRequest(String token) async {
       final request = http.MultipartRequest('PATCH', uri);
       request.headers['Authorization'] = 'Bearer $token';
-      // 'file' é o nome comum para campos de upload, ajuste se a API esperar outro nome (ex: 'image')
+      
       request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
       
       final streamedResponse = await request.send().timeout(const Duration(seconds: 30));
@@ -103,4 +103,42 @@ class ProfileService {
       rethrow;
     }
   }
+
+  Future<void> deleteProfileImage(Auth auth) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/image/delete');
+    String token = auth.token ?? '';
+
+    try {
+      var response = await http.delete(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 401) {
+        final success = await auth.tryRefreshToken();
+        if (success) {
+          token = auth.token ?? '';
+          response = await http.delete(
+            uri,
+            headers: {
+              'Authorization': 'Bearer $token',
+            },
+          ).timeout(const Duration(seconds: 10));
+        }
+      }
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro delete body: ${response.body}');
+      throw AppException('Erro ao deletar imagem (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro delete imagem: $e');
+      rethrow;
+    }
+  }
 }
+

@@ -152,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               initialValue: user.socialName,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -170,7 +170,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               initialValue: user.email,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -188,7 +188,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               initialValue: user.phone,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -206,7 +206,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               initialValue: user.address,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -229,7 +229,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   size: 20,
                                 ),
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -247,7 +247,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               decoration: InputDecoration(
                                 hintText: "New Password",
                                 filled: true,
-                                fillColor: const Color(0xFF00BF6D).withOpacity(0.05),
+                                fillColor: const Color(0xFF00BF6D).withValues(alpha: 0.05),
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16.0 * 1.5,
                                   vertical: 16.0,
@@ -273,7 +273,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(
                                 context,
-                              ).textTheme.bodyLarge!.color!.withOpacity(0.08),
+                              ).textTheme.bodyLarge!.color!.withValues(alpha: 0.08),
                               foregroundColor: Colors.white,
                               minimumSize: const Size(double.infinity, 48),
                               shape: const StadiumBorder(),

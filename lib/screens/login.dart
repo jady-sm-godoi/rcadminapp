@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rcadminapp/screens/profile_screem.dart';
 import 'package:rcadminapp/widgets/login_form.dart';
 
 class Login extends StatelessWidget {
@@ -7,10 +6,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    //simulação de credenciais para enviar pela navegação como argumento
-    final String usuario = 'admin';
-    final String senha = 'admin123';
 
     return Scaffold(
       extendBodyBehindAppBar: true,

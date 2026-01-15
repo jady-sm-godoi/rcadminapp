@@ -21,7 +21,7 @@ class Auth with ChangeNotifier{
         'password': password
       })
     );
-    print('Esse é o response body da autenticação: ${jsonDecode(response.body)}');
+    // print('Esse é o response body da autenticação: ${jsonDecode(response.body)}');
     
     final responseData = jsonDecode(response.body);
 
@@ -45,15 +45,15 @@ class Auth with ChangeNotifier{
     _token = responseData['access_token'];
     _refreshToken = responseData['refresh_token'];
 
-    print('token: $_token');
-    print('refresh token: $_refreshToken');
+    // print('token: $_token');
+    // print('refresh token: $_refreshToken');
 
     notifyListeners();
   }
 
   Future<bool> tryRefreshToken() async {
     if (_refreshToken == null) return false;
-    print('refresh token acionado: $_refreshToken');
+    // print('refresh token acionado: $_refreshToken');
     // Assumindo endpoint de refresh padrão baseado na URL de login
     final url = '${AppConfig.apiBaseUrl}/user/auth/refresh'; 
     try {

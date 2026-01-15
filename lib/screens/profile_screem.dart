@@ -24,14 +24,7 @@ class _ProfileScreemState extends State<ProfileScreem> {
 
   @override
   Widget build(BuildContext context) {
-    // Recupera os argumentos passados pela navegação: credenciais de login
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>?;
-    final usuario = args != null ? args['usuario'] : 'N/A';
-    final senha = args != null ? args['senha'] : 'N/A';
-
-    print('Usuário: $usuario, Senha: $senha');
-
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,

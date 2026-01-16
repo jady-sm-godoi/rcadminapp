@@ -16,6 +16,16 @@ class ProfilePic extends StatelessWidget {
   final bool isShowPhotoUpload;
   final VoidCallback? imageUploadBtnPress;
 
+  ImageProvider get _imageProvider {
+    if (imageFile != null) {
+      return FileImage(imageFile!);
+    }
+    if (image.isNotEmpty) {
+      return NetworkImage(image);
+    }
+    return const AssetImage('assets/images/avatar_placeholder.png');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,9 +43,7 @@ class ProfilePic extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 60,
-            backgroundImage: imageFile != null
-                ? FileImage(imageFile!) as ImageProvider
-                : (image.isNotEmpty ? NetworkImage(image) : const AssetImage('assets/images/avatar_placeholder.png') as ImageProvider),
+            backgroundImage: _imageProvider,
           ),
           if (isShowPhotoUpload)
             InkWell(
@@ -44,9 +52,9 @@ class ProfilePic extends StatelessWidget {
                 radius: 13,
                 backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                 child: const Icon(
-                  Icons.add,
+                  Icons.edit,
                   color: Colors.white,
-                  size: 20,
+                  size: 16,
                 ),
               ),
             ),

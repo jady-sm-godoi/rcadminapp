@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
-import 'package:rcadminapp/screens/edit_profile_screen.dart';
 import 'package:rcadminapp/service/profile_service.dart';
+import 'package:rcadminapp/widgets/edit_profile_form.dart';
 
 class EditMail {
 

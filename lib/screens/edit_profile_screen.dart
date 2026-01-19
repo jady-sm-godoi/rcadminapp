@@ -19,7 +19,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _selectedImage;
   bool _imageDeleted = false;
   TextEditingController? _birthDateController;
-  DateTime? _selectedBirthDate;
   final _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _formData = {};
 
@@ -29,7 +28,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (_birthDateController == null) {
       final user =
           ModalRoute.of(context)!.settings.arguments as UserProfileModel;
-      _selectedBirthDate = user.birth;
       _birthDateController = TextEditingController(
         text:
             '${user.birth.day.toString().padLeft(2, '0')}/${user.birth.month.toString().padLeft(2, '0')}/${user.birth.year}',

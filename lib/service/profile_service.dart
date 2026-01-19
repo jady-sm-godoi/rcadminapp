@@ -218,9 +218,6 @@ class ProfileService {
 
       // Erro 400 → email já existente
     if (response.statusCode == 400) {
-      final body = jsonDecode(response.body);
-      final detail = body['detail'] as String?;
-
       throw AppException('Este email já está em uso. Cadastre outro!');
     }
 

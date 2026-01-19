@@ -35,20 +35,18 @@ class EditMail {
                   ),
                   SizedBox(height: 16),
                   const Divider(),
-                  Container(
-                    child: Column(
-                      children: [
-                        const Text(
-                        'Importante!',
-                        style: TextStyle(fontSize: 16), 
-                        ),
-                        const SizedBox(height: 8),
-                        Text('Dentro do rcadmin, o endereço de e-mail deve ser único, pois é por meio dele que nos comunicamos com outros sistemas, como rdstation e register2event.\nPortanto, para alterar seu endereço de e-mail, você deve escolher um que não esteja listado no rcadmin e após enviar o formulário, uma mensagem com um link de confirmação será enviada para o endereço de e-mail escolhido.\nApós a confirmação, você poderá efetuar login no sistema com o novo endereço de e-mail escolhido.',
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                        textAlign: TextAlign.justify,
-                        ),
-                      ]
-                    ),
+                  Column(
+                    children: [
+                      const Text(
+                      'Importante!',
+                      style: TextStyle(fontSize: 16), 
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Dentro do rcadmin, o endereço de e-mail deve ser único, pois é por meio dele que nos comunicamos com outros sistemas, como rdstation e register2event.\nPortanto, para alterar seu endereço de e-mail, você deve escolher um que não esteja listado no rcadmin e após enviar o formulário, uma mensagem com um link de confirmação será enviada para o endereço de e-mail escolhido.\nApós a confirmação, você poderá efetuar login no sistema com o novo endereço de e-mail escolhido.',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                      textAlign: TextAlign.justify,
+                      ),
+                    ]
                   ),
                   const Divider(),
                   const SizedBox(height: 16),
@@ -63,8 +61,9 @@ class EditMail {
                           keyboardType: TextInputType.emailAddress,
                           // initialValue: user.sosContact,
                           validator: (value) {
-                            if (value == null || value.isEmpty)
+                            if (value == null || value.isEmpty){
                               return 'Informe o e-mail';
+                            }
                             if (!value.contains('@')) return 'E-mail inválido';
                             return null;
                           },

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/models/user_profile.dart';
-import 'package:rcadminapp/screens/edit_profile_screen.dart';
-import 'package:rcadminapp/service/profile_service.dart';
 import 'package:rcadminapp/utils/edit_mail.dart';
 import 'package:rcadminapp/utils/profile_pic_update.dart';
 import 'package:rcadminapp/widgets/profile_pic.dart';

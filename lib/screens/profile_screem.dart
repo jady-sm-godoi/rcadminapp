@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/models/user_profile.dart';
 import 'package:rcadminapp/service/profile_service.dart';
+import 'package:rcadminapp/widgets/rca_header_bar.dart';
 import 'package:rcadminapp/widgets/user_profile_card.dart';
 
 class ProfileScreem extends StatefulWidget {
@@ -28,30 +29,7 @@ class _ProfileScreemState extends State<ProfileScreem> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text(
-          'rc@dmin app',
-          style: TextStyle(color: Color.fromRGBO(135, 118, 78, 1)),
-        ),
-        elevation: 5,
-        backgroundColor: Color.fromRGBO(250, 250, 250, 1),
-        foregroundColor: Colors.black,
-        shadowColor: Colors.black,
-        toolbarHeight: 72,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.settings_outlined,
-              color: Color.fromRGBO(135, 118, 78, 1),
-            ),
-          ),
-        ],
-      ),
+      appBar: RcaHeaderBar(),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

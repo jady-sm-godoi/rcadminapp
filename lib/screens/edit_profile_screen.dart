@@ -65,30 +65,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: RcaHeaderBar(),
-      // appBar: AppBar(
-      //   centerTitle: false,
-      //   title: const Text(
-      //     'rc@dmin app',
-      //     style: TextStyle(color: Color.fromRGBO(135, 118, 78, 1)),
-      //   ),
-      //   elevation: 5,
-      //   backgroundColor: Color.fromRGBO(250, 250, 250, 1),
-      //   foregroundColor: Colors.black,
-      //   shadowColor: Colors.black,
-      //   toolbarHeight: 72,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {},
-      //       icon: Icon(
-      //         Icons.settings_outlined,
-      //         color: Color.fromRGBO(135, 118, 78, 1),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(

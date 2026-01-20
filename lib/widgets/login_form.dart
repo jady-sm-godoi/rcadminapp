@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
   
-  Future<void> _submit(dynamic context) async {
+  Future<void> _submit() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if(!isValid){
@@ -52,7 +52,6 @@ class _LoginFormState extends State<LoginForm> {
       if (!context.mounted) return;
       Navigator.of(context).pushReplacementNamed('/profile');
     }catch(error){
-       if (!context.mounted) return;
        if (error is Exception) {
         _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
       } else {
@@ -117,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                 CircularProgressIndicator()
               else
                 ElevatedButton(
-                  onPressed: () => _submit(context),
+                  onPressed: _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),

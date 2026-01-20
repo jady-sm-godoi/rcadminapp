@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/service/profile_service.dart';
+import 'package:rcadminapp/widgets/rca_bottom_modal.dart';
 
 class ProfilePicUpdate {
   // Construtor privado para impedir instanciação
@@ -18,33 +19,27 @@ class ProfilePicUpdate {
     try {
       final ImagePicker picker = ImagePicker();
 
-      final dynamic source = await showModalBottomSheet<dynamic>(
+      final dynamic source = await RcaBottomModal.show<dynamic>(
         context: context,
-        builder: (BuildContext context) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Galeria'),
-                  onTap: () => Navigator.of(context).pop(ImageSource.gallery),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Câmera'),
-                  onTap: () => Navigator.of(context).pop(ImageSource.camera),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.delete),
-                  title: const Text('Remover imagem'),
-                  onTap: () {
-                    Navigator.of(context).pop('delete');
-                  },
-                ),
-              ],
+        content: Column(
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Galeria'),
+              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
             ),
-          );
-        },
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: const Text('Câmera'),
+              onTap: () => Navigator.of(context).pop(ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Remover imagem'),
+              onTap: () => Navigator.of(context).pop('delete'),
+            ),
+          ],
+        ),
       );
 
       if (source == null) return;

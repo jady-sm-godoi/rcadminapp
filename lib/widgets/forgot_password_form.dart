@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/service/profile_service.dart';
 import 'package:rcadminapp/utils/otp_form.dart';
 import 'package:rcadminapp/utils/validators.dart';
@@ -38,7 +36,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     );
   }
   
-  Future<void> _submit() async {
+  Future<void> _submit(dynamic context) async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if(!isValid){
@@ -61,35 +59,16 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     try{
       await ProfileService().changePassword(emailData);
 
-      if (mounted) {
-        //TODO: mostrar modal com formulario para digitar o código enviado por e-mail (OtpForm)
-        OtpForm.otpFormModal(context, _authData['email']!, _authData['password']!);
+      if (!context.mounted) return;
+      OtpForm.otpFormModal(context, _authData['email']!, _authData['password']!);
 
-      } else {
-        _showErrorDialog('Erro inesperado');
-      }
-
-    }catch(error){
-
+    } catch (error) {
+      if (!context.mounted) return;
+      _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
     }
 
-    // Auth auth = Provider.of(context, listen: false);
-    // try{
-    //   await auth.loginRequest(_authData['email']!, _authData['password']!);
-    //   if (mounted) {
-    //     Navigator.of(context).pushReplacementNamed('/profile');
-    //   }
-    // }catch(error){
-    //    if (error is Exception) {
-    //     _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
-    //   } else {
-    //     _showErrorDialog('Erro inesperado');
-    //   }
-    // }
-
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
+    if (!context.mounted) return;
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -151,7 +130,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 CircularProgressIndicator()
               else
                 ElevatedButton(
-                  onPressed: _submit,
+                  onPressed: () => _submit(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),

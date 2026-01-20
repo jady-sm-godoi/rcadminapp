@@ -30,20 +30,22 @@ class _EditProfileFormState extends State<EditProfileForm> {
     ),
   );
 
-  Future<void> _submitForm() async {
+
+  Future<void> _submitForm(dynamic context) async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
     // Adiciona campos que não estão no formulário mas são necessários
     _formData['gender'] = widget.user.gender;
 
+    if (!context.mounted) return;
     final auth = Provider.of<Auth>(context, listen: false);
 
     try {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Salvando dados...')),
       );
-
+      
       await ProfileService().updateProfileData(auth, _formData);
 
       if (!context.mounted) return;
@@ -58,7 +60,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
       if (!context.mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+      ).showSnackBar(SnackBar(content: Text('Erro: ${e.toString().replaceFirst('Exception: ', '')}')));
     }
   }
 
@@ -75,18 +77,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.socialName,
                   onSaved: (value) => _formData['social_name'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -95,18 +86,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   initialValue: widget.user.phone,
                   onSaved: (value) => _formData['phone'] = value ?? '',
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               Text("Endereço completo"),
@@ -115,18 +95,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.address,
                   onSaved: (value) => _formData['address'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -134,18 +103,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.number,
                   onSaved: (value) => _formData['number'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -153,18 +111,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.complement,
                   onSaved: (value) => _formData['complement'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -172,18 +119,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.district,
                   onSaved: (value) => _formData['district'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -192,18 +128,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   initialValue: widget.user.zipCode,
                   onSaved: (value) => _formData['zip_code'] = value ?? '',
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -211,18 +136,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.city,
                   onSaved: (value) => _formData['city'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -230,18 +144,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.state,
                   onSaved: (value) => _formData['state'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -249,18 +152,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.country,
                   onSaved: (value) => _formData['country'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -268,18 +160,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 child: TextFormField(
                   initialValue: widget.user.sosContact,
                   onSaved: (value) => _formData['sos_contact'] = value ?? '',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
               UserInfoEditField(
@@ -288,18 +169,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   initialValue: widget.user.sosPhone,
                   onSaved: (value) => _formData['sos_phone'] = value ?? '',
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(36, 59, 85, 0.05),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                  ),
+                  decoration: _inputDecoration
                 ),
               ),
             ],
@@ -318,7 +188,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   minimumSize: const Size(double.infinity, 48),
                   shape: const StadiumBorder(),
                 ),
-                onPressed: _submitForm,
+                onPressed: () => _submitForm(context),
                 child: const Text("Salvar"),
               ),
             ),

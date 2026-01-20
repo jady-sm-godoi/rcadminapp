@@ -49,6 +49,7 @@ class ProfilePicUpdate {
 
       if (source == null) return;
 
+      if (!context.mounted) return;
       final auth = Provider.of<Auth>(context, listen: false);
 
       if (source == 'delete') {
@@ -59,7 +60,6 @@ class ProfilePicUpdate {
         await ProfileService().deleteProfileImage(auth);
 
         if (!context.mounted) return;
-
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Imagem removida com sucesso!')),
@@ -76,7 +76,6 @@ class ProfilePicUpdate {
       if (image == null) return;
 
       if (!context.mounted) return;
-
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Enviando imagem...')));
@@ -84,8 +83,6 @@ class ProfilePicUpdate {
       await ProfileService().uploadProfileImage(auth, File(image.path));
 
       if (!context.mounted) return;
-
-      // Remove a mensagem de "Enviando..." para que a de sucesso apareça imediatamente
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Imagem atualizada com sucesso!')),
@@ -96,7 +93,7 @@ class ProfilePicUpdate {
       if (!context.mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+      ).showSnackBar(SnackBar(content: Text('Erro: ${e.toString().replaceFirst('Exception: ', '')}')));
     }
   }
   

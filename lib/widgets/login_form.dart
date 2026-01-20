@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
   
-  Future<void> _submit() async {
+  Future<void> _submit(dynamic context) async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if(!isValid){
@@ -49,10 +49,10 @@ class _LoginFormState extends State<LoginForm> {
     Auth auth = Provider.of(context, listen: false);
     try{
       await auth.loginRequest(_authData['email']!, _authData['password']!);
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/profile');
-      }
+      if (!context.mounted) return;
+      Navigator.of(context).pushReplacementNamed('/profile');
     }catch(error){
+       if (!context.mounted) return;
        if (error is Exception) {
         _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
       } else {
@@ -60,9 +60,8 @@ class _LoginFormState extends State<LoginForm> {
       }
     }
 
-    if (mounted) {
-      setState(() => _isLoading = false);
-    }
+    if (!context.mounted) return;
+    setState(() => _isLoading = false);
 
      
     // print('Formulário submetido');
@@ -118,7 +117,7 @@ class _LoginFormState extends State<LoginForm> {
                 CircularProgressIndicator()
               else
                 ElevatedButton(
-                  onPressed: _submit,
+                  onPressed: () => _submit(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(135, 118, 78, 1),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),

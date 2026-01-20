@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/service/profile_service.dart';
 import 'package:rcadminapp/widgets/edit_profile_form.dart';
 
@@ -138,7 +136,7 @@ class OtpForm {
                               ).hideCurrentSnackBar();
                                                             
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Erro: $e')),
+                                SnackBar(content: Text('Erro: ${e.toString().replaceFirst('Exception: ', '')}')),
                               );
                             }
                           }

@@ -68,6 +68,88 @@ class ProfileService {
     }
   }
 
+  Future<void> changePassword(Map<String, String> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/forgot-password');
+    // String token = auth.token ?? '';
+
+    try {
+      var response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro change password body: ${response.body}');
+      throw AppException('Erro ao alterar senha (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro change password: $e');
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> verifyOtp(Map<String, String> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/verify-otp');
+    // String token = auth.token ?? '';
+
+    try {
+      var response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        return jsonDecode(utf8.decode(response.bodyBytes));
+      }
+
+      if (response.statusCode == 400) {
+        throw AppException('OTP inválido ou expirado.');
+      }
+
+      debugPrint('Erro verify otp body: ${response.body}');
+      throw AppException('Erro ao verificar OTP (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro verify otp: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> resetPassword(Map<String, String> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/reset-password');
+    // String token = auth.token ?? '';
+
+    try {
+      var response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      debugPrint('Erro reset password body: ${response.body}');
+      throw AppException('Erro ao redefinir senha (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro reset password: $e');
+      rethrow;
+    }
+  }
+  
   Future<void> uploadProfileImage(Auth auth, File imageFile) async {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/image/upload');
 
@@ -181,7 +263,6 @@ class ProfileService {
       rethrow;
     }
   }
-
 
   Future<void> updateProfileEmail(Auth auth, Map<String, String> data) async {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/profile/email/change');

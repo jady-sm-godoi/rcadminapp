@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
+import 'package:rcadminapp/service/profile_service.dart';
+import 'package:rcadminapp/utils/otp_form.dart';
 import 'package:rcadminapp/utils/validators.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class ForgotPasswordForm extends StatefulWidget {
+  const ForgotPasswordForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   final Map<String, String> _authData = {
     'email': '',
-    'password': ''
+    'password': '',
+    'password_repeat': ''
   };
 
   void _showErrorDialog(String msg){
@@ -46,26 +49,47 @@ class _LoginFormState extends State<LoginForm> {
 
     _formKey.currentState?.save();
 
-    Auth auth = Provider.of(context, listen: false);
+    if (_authData['password'] != _authData['password_repeat']) {
+      _showErrorDialog('As senhas não coincidem');
+      setState(() => _isLoading = false);
+      return;
+    }
+    final emailData = {
+      'email': _authData['email']!,
+    };
+
     try{
-      await auth.loginRequest(_authData['email']!, _authData['password']!);
+      await ProfileService().changePassword(emailData);
+
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/profile');
-      }
-    }catch(error){
-       if (error is Exception) {
-        _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
+        //TODO: mostrar modal com formulario para digitar o código enviado por e-mail (OtpForm)
+        OtpForm.otpFormModal(context, _authData['email']!, _authData['password']!);
+
       } else {
         _showErrorDialog('Erro inesperado');
       }
+
+    }catch(error){
+
     }
+
+    // Auth auth = Provider.of(context, listen: false);
+    // try{
+    //   await auth.loginRequest(_authData['email']!, _authData['password']!);
+    //   if (mounted) {
+    //     Navigator.of(context).pushReplacementNamed('/profile');
+    //   }
+    // }catch(error){
+    //    if (error is Exception) {
+    //     _showErrorDialog(error.toString().replaceFirst('Exception: ', ''));
+    //   } else {
+    //     _showErrorDialog('Erro inesperado');
+    //   }
+    // }
 
     if (mounted) {
       setState(() => _isLoading = false);
     }
-
-     
-    // print('Formulário submetido');
   }
 
   @override
@@ -88,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Login",
+                "Troque sua senha",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -106,11 +130,20 @@ class _LoginFormState extends State<LoginForm> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'senha',
+                  labelText: 'nova senha',
                 ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
                 onSaved: (password) => _authData['password'] = password ?? '',
+                validator: Validators.password,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'repita a nova senha',
+                ),
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                onSaved: (value) => _authData['password_repeat'] = value ?? '',
                 validator: Validators.password,
               ),
               SizedBox(height: 20,),
@@ -126,7 +159,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     minimumSize: Size(double.infinity, 36)
                   ),
-                  child: Text('Entrar',
+                  child: Text('Enviar',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
@@ -134,10 +167,10 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/forgot_password');
+                    Navigator.of(context).pushReplacementNamed('/');
                   },
                   child: Text(
-                    'Forgot Password?',
+                    'Login',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium!

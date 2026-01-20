@@ -68,7 +68,55 @@ class ProfileService {
     }
   }
 
-  Future<void> changePassword(Map<String, String> data) async {
+  Future<void> changePassword(Auth auth, Map<String, String> data) async {
+    final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/change-password');
+    String token = auth.token ?? '';
+
+    print('data sent to changePassword: $data');
+
+    try {
+      var response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 401) {
+        final success = await auth.tryRefreshToken();
+        if (success) {
+          token = auth.token ?? '';
+          response = await http.patch(
+            uri,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(data),
+          ).timeout(const Duration(seconds: 30));
+        }
+      }
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      // Erro 400 → email já existente
+    if (response.statusCode == 400) {
+      throw AppException('senha invalida.');
+    }
+
+      debugPrint('Erro update body: ${response.body}');
+      throw AppException('Erro ao trocar a senha (${response.statusCode})');
+    } catch (e) {
+      debugPrint('Erro update senha: $e');
+      rethrow;
+    }
+  }
+  
+  Future<void> forgotPassword(Map<String, String> data) async {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/forgot-password');
     // String token = auth.token ?? '';
 
@@ -127,7 +175,7 @@ class ProfileService {
   Future<void> resetPassword(Map<String, String> data) async {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/reset-password');
     // String token = auth.token ?? '';
-
+    print(' data sent to resetPassword: $data');
     try {
       var response = await http.post(
         uri,

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/service/profile_service.dart';
 import 'package:rcadminapp/utils/otp_form.dart';
 import 'package:rcadminapp/utils/validators.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
-  const ForgotPasswordForm({super.key});
+  final bool isChangePassword;
+
+  const ForgotPasswordForm({super.key, this.isChangePassword = false});
 
   @override
   State<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
@@ -17,7 +21,8 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
-    'password_repeat': ''
+    'password_repeat': '',
+    'old_password': '',
   };
 
   void _showErrorDialog(String msg){
@@ -52,15 +57,33 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
       setState(() => _isLoading = false);
       return;
     }
-    final emailData = {
-      'email': _authData['email']!,
-    };
 
     try{
-      await ProfileService().changePassword(emailData);
+      if (widget.isChangePassword) {
+        final auth = Provider.of<Auth>(context, listen: false);
+        
+        // Envia os dados para troca de senha (estando logado)
+        await ProfileService().changePassword(auth, {
+          // A API espera old_password e new_password
+          'old_password': _authData['old_password']!,
+          'new_password': _authData['password']!
+        });
 
-      if (!context.mounted) return;
-      OtpForm.otpFormModal(context, _authData['email']!, _authData['password']!);
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Senha alterada com sucesso!')),
+        );
+        // Navigator.of(context).pop(); // Fecha a tela/modal
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+
+      } else {
+        // Fluxo de "Esqueci minha senha" (não logado ou reset via OTP)
+        final emailData = {'email': _authData['email']!};
+        await ProfileService().forgotPassword(emailData);
+
+        if (!context.mounted) return;
+        OtpForm.otpFormModal(context, _authData['email']!, _authData['password']!);
+      }
 
     } catch (error) {
       if (!context.mounted) return;
@@ -91,7 +114,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Troque sua senha",
+                widget.isChangePassword ? "Alterar Senha" : "Troque sua senha",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -99,13 +122,24 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 )
               ),
               SizedBox(height: 16),
-              TextFormField(
+              if (!widget.isChangePassword)
+                TextFormField(
                 decoration: InputDecoration(
                   labelText: 'e-mail',
                 ),
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (email) => _authData['email'] = email ?? '',
                 validator: Validators.email,
+              ),
+              if (widget.isChangePassword)
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'senha antiga',
+                ),
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                onSaved: (oldPassword) => _authData['old_password'] = oldPassword ?? '',
+                validator: Validators.password,
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -138,12 +172,13 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                     ),
                     minimumSize: Size(double.infinity, 36)
                   ),
-                  child: Text('Enviar',
+                  child: Text(widget.isChangePassword ? 'Salvar' : 'Enviar',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                   ),
                 ),
+                if (!widget.isChangePassword)
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/');

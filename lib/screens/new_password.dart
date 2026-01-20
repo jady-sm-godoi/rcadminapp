@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rcadminapp/widgets/forgot_password_form.dart';
+import 'package:rcadminapp/widgets/new_password_form.dart';
 import 'package:rcadminapp/widgets/rca_header_bar.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -7,6 +7,8 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final isChangePassword = ModalRoute.of(context)?.settings.arguments as bool? ?? false;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -32,7 +34,7 @@ class ForgotPassword extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ForgotPasswordForm(),
+                ForgotPasswordForm(isChangePassword: isChangePassword),
               ],
             ),
           ),

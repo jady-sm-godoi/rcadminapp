@@ -92,11 +92,17 @@ class _RcaDrawerState extends State<RcaDrawer> {
                       ),
                       const SizedBox(height: 24),
                       buildMenuItem(
-                        active: false,
+                        active: true,
                         context,
                         text: 'trocar de senha',
                         icon: Icons.lock_outline,
-                        onClicked: () {},
+                        onClicked: () {
+                          Navigator.of(context).pop(); // Fecha o drawer
+                          Navigator.of(context).pushNamed(
+                            '/forgot_password',
+                            arguments: true, // Passa 'true' para indicar isChangePassword
+                          );
+                        },
                       ),
                       const SizedBox(height: 24),
                       buildMenuItem(

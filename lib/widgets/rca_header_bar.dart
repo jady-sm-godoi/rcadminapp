@@ -22,15 +22,17 @@ class RcaHeaderBar extends StatelessWidget implements PreferredSizeWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.settings_outlined,
-              color: Color.fromRGBO(135, 118, 78, 1),
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       Scaffold.of(context).openDrawer();
+        //     },
+        //     icon: Icon(
+        //       Icons.settings_outlined,
+        //       color: Color.fromRGBO(135, 118, 78, 1),
+        //     ),
+        //   ),
+        // ],
       );
   }
 }

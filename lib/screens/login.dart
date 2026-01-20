@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rcadminapp/widgets/login_form.dart';
+import 'package:rcadminapp/widgets/rca_drawer.dart';
 import 'package:rcadminapp/widgets/rca_header_bar.dart';
 
 class Login extends StatelessWidget {
@@ -7,7 +8,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: RcaHeaderBar(),
@@ -23,21 +23,19 @@ class Login extends StatelessWidget {
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-              )
-            )
+              ),
+            ),
           ),
           SizedBox(
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LoginForm(),
-              ],
+              children: [LoginForm()],
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

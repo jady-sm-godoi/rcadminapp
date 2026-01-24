@@ -43,13 +43,16 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/images/RCA.png
+  adaptive_icon_background: "#243B55"
+  adaptive_icon_foreground: assets/images/RCA.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -94,3 +97,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  # Cor de fundo da splash screen (Baseado no azul escuro do seu EditProfileScreen)
+  color: "#243B55"
+  # Caminho para a imagem da logo
+  image: assets/images/RCA.png
+  # Garante que a imagem seja redimensionada para caber na tela no iOS (evita zoom excessivo)
+  ios_content_mode: scaleAspectFit
+  # Configuração específica para Android 12+ (que exige ícone centralizado)
+  android_12:
+    image: assets/images/RCA.png
+    color: "#243B55"
+  # Se quiser tela cheia (remove a barra de status durante o splash)
+  fullscreen: true

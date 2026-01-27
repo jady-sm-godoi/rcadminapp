@@ -15,6 +15,7 @@ class ProfilePicUpdate {
     required BuildContext context,
     required Function(File?) onImageSelected,
     required Function() onImageDeleted,
+    String? imageUrl,
   }) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -54,6 +55,13 @@ class ProfilePicUpdate {
 
         await ProfileService().deleteProfileImage(auth);
 
+        // Limpa o cache da imagem antiga se existir
+        if (imageUrl != null && imageUrl.isNotEmpty) {
+          await NetworkImage(imageUrl).evict();
+          PaintingBinding.instance.imageCache.clear();
+          PaintingBinding.instance.imageCache.clearLiveImages();
+        }
+
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -76,6 +84,13 @@ class ProfilePicUpdate {
       ).showSnackBar(const SnackBar(content: Text('Enviando imagem...')));
 
       await ProfileService().uploadProfileImage(auth, File(image.path));
+
+      // Limpa o cache da imagem antiga para garantir que a nova versão seja baixada
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        await NetworkImage(imageUrl).evict();
+        PaintingBinding.instance.imageCache.clear();
+        PaintingBinding.instance.imageCache.clearLiveImages();
+      }
 
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).hideCurrentSnackBar();

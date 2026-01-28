@@ -111,6 +111,7 @@ class _RcaDrawerState extends State<RcaDrawer> {
                         text: 'Sair',
                         icon: Icons.logout,
                         onClicked: () {
+                          Provider.of<Auth>(context, listen: false).logout();
                           Navigator.of(
                             context,
                           ).pushNamedAndRemoveUntil('/', (route) => false);

@@ -78,4 +78,10 @@ class Auth with ChangeNotifier{
     }
     return false;
   }
+
+  void logout() {
+    _token = null;
+    _refreshToken = null;
+    notifyListeners();
+  }
 }

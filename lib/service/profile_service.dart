@@ -72,7 +72,7 @@ class ProfileService {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/change-password');
     String token = auth.token ?? '';
 
-    print('data sent to changePassword: $data');
+    // print('data sent to changePassword: $data');
 
     try {
       var response = await http.post(
@@ -175,7 +175,7 @@ class ProfileService {
   Future<void> resetPassword(Map<String, String> data) async {
     final uri = Uri.parse('${AppConfig.apiBaseUrl}/user/auth/reset-password');
     // String token = auth.token ?? '';
-    print(' data sent to resetPassword: $data');
+    // print(' data sent to resetPassword: $data');
     try {
       var response = await http.post(
         uri,

@@ -58,11 +58,14 @@ class _RcaDrawerState extends State<RcaDrawer> {
                       ),
                       const SizedBox(height: 16),
                       buildMenuItem(
-                        active: false,
+                        active: true,
                         context,
-                        text: 'Conferências',
+                        text: 'Eventos',
                         icon: Icons.event_note_outlined,
-                        onClicked: () => {},
+                        onClicked: () => {
+                          Navigator.of(context).pop(), // Fecha o drawer
+                          Navigator.of(context).pushNamed('/events'),
+                        },
                       ),
                       const SizedBox(height: 16),
                       buildMenuItem(

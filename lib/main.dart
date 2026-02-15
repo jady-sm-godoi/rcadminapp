@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/screens/edit_profile_screen.dart';
+import 'package:rcadminapp/screens/events_screen.dart';
 import 'package:rcadminapp/screens/new_password.dart';
 import 'package:rcadminapp/screens/login.dart';
 import 'package:rcadminapp/screens/paginanaoencontrada.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           '/profile': (_) => const ProfileScreem(),
           '/edit_profile': (_) => const EditProfileScreen(),
           '/forgot_password': (_) => const ForgotPassword(),
+          '/events': (_) => const EventsScreen(),
         },
       
         onGenerateRoute: (settings) { // rotas dinâmicas (ex: com parâmetros, perfil específico, etc)

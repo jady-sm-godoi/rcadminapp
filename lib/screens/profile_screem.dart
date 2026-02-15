@@ -31,7 +31,7 @@ class _ProfileScreemState extends State<ProfileScreem> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: RcaHeaderBar(),
+      appBar: RcaHeaderBar(subtitle: 'Meu perfil de aluno',),
       endDrawer: RcaDrawer(),
       body: RcaBackground(
         addPaddingTop: true,

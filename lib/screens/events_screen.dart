@@ -34,7 +34,7 @@ class EventsScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: RcaHeaderBar(),
+      appBar: RcaHeaderBar(subtitle: 'Eventos abertos',),
       endDrawer: RcaDrawer(),
       body: RcaBackground(
         addPaddingTop: true,

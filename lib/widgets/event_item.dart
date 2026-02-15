@@ -19,7 +19,7 @@ class EventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Cores baseadas no tema do app (extraídas do RcaDrawer/Login)
-    final primaryColor = const Color.fromRGBO(135, 118, 78, 1);
+    
     
     return Card(
       elevation: 4,
@@ -31,6 +31,7 @@ class EventItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Linha do Título e Status
@@ -49,36 +50,82 @@ class EventItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  _buildStatusTag(isRegistered, primaryColor),
+                  isRegistered ? _buildStatusTag() : Container(),
                 ],
               ),
               const SizedBox(height: 12),
-              
-              // Informações de Data e Local
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey[600]),
-                  const SizedBox(width: 6),
-                  Text(
-                    date,
-                    style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.location_on_outlined, size: 16, color: Colors.grey[600]),
-                  const SizedBox(width: 6),
                   Expanded(
-                    child: Text(
-                      location,
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey[600]),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    date,
+                                    style: TextStyle(color: Colors.grey[800], fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on_outlined, size: 16, color: Colors.grey[600]),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      location,
+                                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (!isRegistered)
+                          Text('inscreva-se', style: TextStyle(color: Color.fromRGBO(135, 118, 78, 1), fontSize: 14, fontWeight: FontWeight.bold),),
+                      ],
+                    )
+                  )
+                ]
+              )
+              // Informações de Data e Local
+              // Row(
+              //   children: [
+              //     Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey[600]),
+              //     const SizedBox(width: 6),
+              //     Text(
+              //       date,
+              //       style: TextStyle(color: Colors.grey[800], fontSize: 14),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 8),
+              // Row(
+              //   children: [
+              //     Icon(Icons.location_on_outlined, size: 16, color: Colors.grey[600]),
+              //     const SizedBox(width: 6),
+              //     Expanded(
+              //       child: Text(
+              //         location,
+              //         style: TextStyle(color: Colors.grey[800], fontSize: 14),
+              //         overflow: TextOverflow.ellipsis,
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -86,21 +133,22 @@ class EventItem extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusTag(bool registered, Color primaryColor) {
+  Widget _buildStatusTag() {
+    final primaryColor = const Color.fromRGBO(135, 118, 78, 1);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
       decoration: BoxDecoration(
-        color: registered ? Colors.green.withValues(alpha: 0.1) : primaryColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
+        color: primaryColor,
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: registered ? Colors.green : primaryColor,
+          color: primaryColor,
           width: 1,
         ),
       ),
       child: Text(
-        registered ? 'Inscrito' : 'Disponível',
+        'Inscrito',
         style: TextStyle(
-          color: registered ? Colors.green[700] : primaryColor,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),

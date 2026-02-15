@@ -60,7 +60,7 @@ class _RcaDrawerState extends State<RcaDrawer> {
                       buildMenuItem(
                         active: true,
                         context,
-                        text: 'Eventos',
+                        text: 'Conferências',
                         icon: Icons.event_note_outlined,
                         onClicked: () => {
                           Navigator.of(context).pop(), // Fecha o drawer

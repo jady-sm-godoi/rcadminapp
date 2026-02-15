@@ -49,7 +49,7 @@ class _UserProfileCardState extends State<UserProfileCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.only(top: 150, bottom: 50),
+      // margin: EdgeInsets.only(top: 150, bottom: 50),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -5,6 +5,7 @@ import 'package:rcadminapp/models/user_profile.dart';
 import 'package:rcadminapp/utils/profile_pic_update.dart';
 import 'package:rcadminapp/widgets/edit_profile_form.dart';
 import 'package:rcadminapp/widgets/profile_pic.dart';
+import 'package:rcadminapp/widgets/rca_background.dart';
 import 'package:rcadminapp/widgets/rca_header_bar.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -65,23 +66,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: RcaHeaderBar(),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(95, 120, 138, 0.5),
-              Color.fromRGBO(36, 59, 85, 0.9),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+      body: RcaBackground(
+        addPaddingTop: true,
         child: Center(
           child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Card(
               elevation: 5,
-              margin: EdgeInsets.only(top: 150, bottom: 50),
+              // margin: EdgeInsets.only(top: 150, bottom: 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

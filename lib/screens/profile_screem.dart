@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rcadminapp/models/auth.dart';
 import 'package:rcadminapp/models/user_profile.dart';
 import 'package:rcadminapp/service/profile_service.dart';
+import 'package:rcadminapp/widgets/rca_background.dart';
 import 'package:rcadminapp/widgets/rca_drawer.dart';
 import 'package:rcadminapp/widgets/rca_header_bar.dart';
 import 'package:rcadminapp/widgets/user_profile_card.dart';
@@ -32,17 +33,8 @@ class _ProfileScreemState extends State<ProfileScreem> {
       backgroundColor: Colors.white,
       appBar: RcaHeaderBar(),
       endDrawer: RcaDrawer(),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(95, 120, 138, 0.5),
-              Color.fromRGBO(36, 59, 85, 0.9),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+      body: RcaBackground(
+        addPaddingTop: true,
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.0),

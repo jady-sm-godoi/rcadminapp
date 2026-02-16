@@ -5,6 +5,7 @@ class EventItem extends StatelessWidget {
   final String date;
   final String location;
   final bool isRegistered;
+  final String? statusLabel;
   final VoidCallback onTap;
 
   const EventItem({
@@ -13,6 +14,7 @@ class EventItem extends StatelessWidget {
     required this.date,
     required this.location,
     required this.isRegistered,
+    this.statusLabel,
     required this.onTap,
   });
 
@@ -146,7 +148,7 @@ class EventItem extends StatelessWidget {
         ),
       ),
       child: Text(
-        'Inscrito',
+        statusLabel ?? 'Inscrito',
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,

@@ -18,10 +18,18 @@ class EventItem extends StatelessWidget {
     required this.onTap,
   });
 
+  String get _formattedStatus {
+    if (statusLabel == 'CCD') {
+      return 'Confirmado';
+    } else if (statusLabel == 'PND') {
+      return 'Pendente';
+    }
+    return statusLabel ?? 'Inscrito';
+  }
+
   @override
   Widget build(BuildContext context) {
     // Cores baseadas no tema do app (extraídas do RcaDrawer/Login)
-    
     
     return Card(
       elevation: 4,
@@ -148,7 +156,7 @@ class EventItem extends StatelessWidget {
         ),
       ),
       child: Text(
-        statusLabel ?? 'Inscrito',
+        _formattedStatus,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
